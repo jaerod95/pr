@@ -248,10 +248,11 @@ fn fetch_github_reviewers() -> Vec<String> {
         .output()
         .unwrap();
 
+    // Convert the command output into a string
     let gh_team_users = String::from_utf8_lossy(&gh_team_users_output.stdout)
-        .split_whitespace()
-        .map(String::from)
-        .collect::<Vec<String>>();
+        .split_whitespace() // Splitting by whitespace to get individual slugs
+        .map(|slug| format!("@dittowords/{}", slug)) // Prefixing each slug
+        .collect::<Vec<String>>(); // Collecting into a Vector
 
     let gh_users_output = Command::new("gh")
         .arg("api")
